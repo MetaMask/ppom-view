@@ -2,7 +2,7 @@
 
 ## building
 ```bash
-nmp install
+npm install
 npm run clean
 npm run build
 ```
