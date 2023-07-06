@@ -2,6 +2,7 @@ import ppomInit, { PPOM } from "@blockaid/ppom-mock";
 import wasm from "@blockaid/ppom-mock/dist/ppom_bg.wasm";
 import invoke from "react-native-webview-invoke/browser";
 import asyncInvoke from "./invoke-lib.js";
+import { Buffer } from "buffer";
 (async () => {
   asyncInvoke(invoke);
   console.log = invoke.bind("console.log");
@@ -10,16 +11,8 @@ import asyncInvoke from "./invoke-lib.js";
 
   console.log("hello world!");
 
-  function base64ToUint8Array(base64String) {
-    const binaryString = atob(base64String);
-    const length = binaryString.length;
-    const uint8Array = new Uint8Array(length);
-
-    for (let i = 0; i < length; i++) {
-      uint8Array[i] = binaryString.charCodeAt(i);
-    }
-
-    return uint8Array;
+  function base64ToUint8Array(b64) {
+    return Buffer.from(b64, "base64");
   }
 
   function convertBase64ToFiles(base64Array) {
@@ -28,10 +21,11 @@ import asyncInvoke from "./invoke-lib.js";
     });
   }
 
-  const _wasm = base64ToUint8Array(wasm);
   let ppom = undefined;
 
-  invoke.defineAsync("ppomInit", async () => ppomInit(_wasm));
+  invoke.defineAsync("ppomInit", async () => {
+    await ppomInit(base64ToUint8Array(wasm));
+  });
 
   invoke.define("PPOM.new", async (files) => {
     const jsonRpc = invoke.bindAsync("PPOM.jsonRpc");
@@ -52,5 +46,5 @@ import asyncInvoke from "./invoke-lib.js";
     return await ppom.validateJsonRpc(...args);
   });
 
-  invoke.bind("finishedLoading")();
+  await invoke.bind("finishedLoading")();
 })();
