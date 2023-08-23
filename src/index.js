@@ -1,5 +1,5 @@
-import ppomInit, { PPOM } from "@blockaid/ppom-mock";
-import wasm from "@blockaid/ppom-mock/dist/ppom_bg.wasm";
+import ppomInit, { PPOM } from "@blockaid/ppom";
+import wasm from "@blockaid/ppom/ppom_bg.wasm";
 import invoke from "react-native-webview-invoke/browser";
 import asyncInvoke from "./invoke-lib.js";
 import { Buffer } from "buffer";
