@@ -1,5 +1,5 @@
-import ppomInit, { PPOM } from "@blockaid/ppom";
-import wasm from "@blockaid/ppom/ppom_bg.wasm";
+import ppomInit, { PPOM } from "@blockaid/ppom_release";
+import wasm from "@blockaid/ppom_release/ppom_bg.wasm";
 import invoke from "react-native-webview-invoke/browser";
 import asyncInvoke from "./invoke-lib.js";
 import { Buffer } from "buffer";
@@ -8,8 +8,6 @@ import { Buffer } from "buffer";
   console.log = invoke.bind("console.log");
   console.error = invoke.bind("console.error");
   console.warn = invoke.bind("console.warn");
-
-  console.log("hello world!");
 
   function base64ToUint8Array(b64) {
     return Buffer.from(b64, "base64");
